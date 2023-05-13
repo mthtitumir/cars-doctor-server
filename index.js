@@ -15,7 +15,7 @@ console.log(process.env.DB_PASS);
 // mongoCode 
 
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xx7c7ta.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://carDoctorUser:ebMZE5xyUVfTeAh4@cluster0.xx7c7ta.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -47,7 +47,7 @@ const verifyJWT = (req, res, next) =>{
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const bookingCollection = client.db('carDoctors').collection('bookings');
         const serviceCollection = client.db('carDoctors').collection('services');
