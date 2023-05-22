@@ -10,8 +10,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.DB_PASS);
-
 // mongoCode 
 
 
@@ -27,8 +25,7 @@ const client = new MongoClient(uri, {
 });
 
 const verifyJWT = (req, res, next) =>{
-    console.log('hitting verify jwt');
-    console.log(req.headers.authorization);
+    
     const authorization = req.headers.authorization;
     if (!authorization){
         return res.status(401).send({error: true, message: 'unauthorized access'})
@@ -65,7 +62,17 @@ async function run() {
 
         //SERVICES ROUTES
         app.get('/services', async (req, res) => {
-            const cursor = serviceCollection.find();
+            const sort = req.query.sort;
+            const search = req.query.search;
+            const query = {
+                title: {$regex: search, $options: 'i'}
+            };
+            const options = {
+                sort: {
+                    'price': sort ==='asc' ? 1 : -1
+                }
+            }
+            const cursor = serviceCollection.find(query, options);
             const result = await cursor.toArray();
             res.send(result);
         })
